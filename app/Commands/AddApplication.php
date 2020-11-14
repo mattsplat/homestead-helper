@@ -36,7 +36,6 @@ class AddApplication extends Command
      */
     public function handle()
     {
-
         $this->app_path = $this->ask('What is the local path to your application?');
         $this->domain = $this->ask('What domain would you like to use?');
 
@@ -70,9 +69,13 @@ class AddApplication extends Command
         $this->info('Yaml created');
 
         // run provision
-        $this->runCommand('provision');
+        if($this->choice('Would you like to provision Homestead?', ['yes', 'no'], 'yes') === 'yes') {
+            $this->runCommand('provision');
+        }
         // add to hosts
-        $this->runCommand('add:domain', ['domain' => $this->domain]);
+        if($this->choice('Would you like to add the domain to host file?', ['yes', 'no'], 'yes') === 'yes') {
+            $this->runCommand('add:domain', ['domain' => $this->domain]);
+        }
     }
 
     /**
