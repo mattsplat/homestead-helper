@@ -68,20 +68,11 @@ class AddApplication extends Command
             Yaml::dump($this->yaml, 3, 4, Yaml::DUMP_OBJECT_AS_MAP)
         );
         $this->info('Yaml created');
+
         // run provision
         $this->runCommand('provision');
         // add to hosts
-        $process = Process::fromShellCommandline('sudo echo >> '. $config['hosts_file']);
-        $process->run(function ($type, $buffer) {
-            if (Process::ERR === $type) {
-                echo 'ERR > '.$buffer;
-            } else {
-                echo $buffer;
-            }
-        });
-        if($process->isSuccessful()) {
-            $this->
-        }
+        $this->runCommand('add:domain', ['domain' => $this->domain]);
     }
 
     /**
