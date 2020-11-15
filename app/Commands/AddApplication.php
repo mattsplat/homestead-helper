@@ -36,16 +36,17 @@ class AddApplication extends Command
      */
     public function handle()
     {
-
-        $this->app_path = $this->ask('What is the local path to your application?');
-        $this->domain = $this->ask('What domain would you like to use?');
-        $shouldMapFolder = $this->choice('Do you want to map this folder to individually?', ['yes', 'no'], 'no');
-         // make sure we have the config path
+        // make sure we have the config path
         $this->config = Config::get();
         if (!isset($this->config['path'])) {
             $this->error('Homestead Path is not setup.');
             return;
         }
+
+        $this->app_path = $this->ask('What is the local path to your application?');
+        $this->domain = $this->ask('What domain would you like to use?');
+        $shouldMapFolder = $this->choice('Do you want to map this folder to individually?', ['yes', 'no'], 'no');
+
 
         // add to yaml
         $this->yaml = Yaml::parseFile($this->config['path'].'/Homestead.yaml');
