@@ -36,4 +36,13 @@ This will halt vagrant and restart with provision flag
 This will add an entry to the hosts file with the homestead ip and the domain provided
 
 
+## Future ideas
+- Run composer install on project
+- if empty or non-existent folder provided add clone option
+- create .env 
+- generate key
+- create database
+- migrate database / run seeders
+- npm install
+
 
