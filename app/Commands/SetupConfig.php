@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Lib\Config;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
@@ -56,13 +57,7 @@ class SetupConfig extends Command
 
         $data['hosts_file'] = $this->ask('Where is your host file?',  '/etc/hosts');
 
-        file_put_contents(
-            './.homestead.config.json',
-            json_encode(
-                $data,
-                JSON_PRETTY_PRINT
-            )
-        );
+        Config::write($data);
 
     }
 
