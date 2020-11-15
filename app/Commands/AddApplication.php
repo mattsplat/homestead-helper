@@ -36,6 +36,7 @@ class AddApplication extends Command
      */
     public function handle()
     {
+
         $this->app_path = $this->ask('What is the local path to your application?');
         $this->domain = $this->ask('What domain would you like to use?');
 
@@ -58,7 +59,7 @@ class AddApplication extends Command
         $this->matchFolders();
         $this->yaml['sites'][] = [
             'map' => $this->domain,
-            'path' => $this->vm_path
+            'to' => $this->vm_path
         ];
 
         copy($this->config['path'].'/Homestead.yaml', $this->config['path'].'/Homestead.yaml'.'.copy');
@@ -70,11 +71,10 @@ class AddApplication extends Command
 
         // run provision
         if($this->choice('Would you like to provision Homestead?', ['yes', 'no'], 'yes') === 'yes') {
-            $this->runCommand('provision');
-        }
+            $this->call('provision');        }
         // add to hosts
         if($this->choice('Would you like to add the domain to host file?', ['yes', 'no'], 'yes') === 'yes') {
-            $this->runCommand('add:domain', ['domain' => $this->domain]);
+            $this->call('add:host', ['domain' => $this->domain]);
         }
     }
 

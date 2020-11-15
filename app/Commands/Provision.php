@@ -34,7 +34,7 @@ class Provision extends Command
 
         // halt vagrant box
         $process = Process::fromShellCommandline('vagrant halt');
-        $process->setWorkingDirectory($config['path'] );
+        $process->setWorkingDirectory($config['path']);
         $process->run(function ($type, $buffer) {
             if (Process::ERR === $type) {
                 echo 'ERR > '.$buffer;
@@ -47,7 +47,7 @@ class Provision extends Command
         if($process->isSuccessful()) {
             $this->info('Vagrant Halted Successfully');
             $provision  = Process::fromShellCommandline('vagrant up --provision');
-            $process->setWorkingDirectory($config['path']);
+            $provision->setWorkingDirectory($config['path']);
             $provision->setTimeout(3600);
             $provision->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
