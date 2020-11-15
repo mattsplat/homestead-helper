@@ -15,7 +15,7 @@ class AddApplication extends Command
      *
      * @var string
      */
-    protected $signature = 'add:app';
+    protected $signature = 'add:app {--dry-run}';
 
     /**
      * The description of the command.
@@ -39,8 +39,8 @@ class AddApplication extends Command
 
         $this->app_path = $this->ask('What is the local path to your application?');
         $this->domain = $this->ask('What domain would you like to use?');
-
-        // make sure we have the config path
+        $shouldMapFolder = $this->choice('Do you want to map this folder to individually?', ['yes', 'no'], 'no');
+         // make sure we have the config path
         $this->config = Config::get();
         if (!isset($this->config['path'])) {
             $this->error('Homestead Path is not setup.');
@@ -55,27 +55,40 @@ class AddApplication extends Command
             return;
         }
 
-        // mathc folder
-        $this->matchFolders();
+        // match folder
+        if(!$shouldMapFolder) {
+            $this->matchFolders();
+        } else {
+            $this->mapIndividualFolders();
+        }
+
         $this->yaml['sites'][] = [
             'map' => $this->domain,
             'to' => $this->vm_path
         ];
 
-        copy($this->config['path'].'/Homestead.yaml', $this->config['path'].'/Homestead.yaml'.'.copy');
-        file_put_contents(
-            $this->config['path'].'/Homestead.yaml',
-            Yaml::dump($this->yaml, 3, 4, Yaml::DUMP_OBJECT_AS_MAP)
-        );
-        $this->info('Yaml created');
+        if(!$this->option('dry-run')) {
+            // create back up of yaml file
+            copy($this->config['path'].'/Homestead.yaml', $this->config['path'].'/Homestead.yaml'.'.copy');
 
-        // run provision
-        if($this->choice('Would you like to provision Homestead?', ['yes', 'no'], 'yes') === 'yes') {
-            $this->call('provision');        }
-        // add to hosts
-        if($this->choice('Would you like to add the domain to host file?', ['yes', 'no'], 'yes') === 'yes') {
-            $this->call('add:host', ['domain' => $this->domain]);
+            // create new yaml file
+            file_put_contents(
+                $this->config['path'].'/Homestead.yaml',
+                Yaml::dump($this->yaml, 3, 4, Yaml::DUMP_OBJECT_AS_MAP)
+            );
+            $this->info('Yaml created');
+
+            // run provision
+            if($this->choice('Would you like to provision Homestead?', ['yes', 'no'], 'yes') === 'yes') {
+                $this->call('provision');        }
+            // add to hosts
+            if($this->choice('Would you like to add the domain to host file?', ['yes', 'no'], 'yes') === 'yes') {
+                $this->call('add:host', ['domain' => $this->domain]);
+            }
+        } else {
+            dump($this->yaml);
         }
+
     }
 
     /**
@@ -108,5 +121,26 @@ class AddApplication extends Command
         }
 
         $this->vm_path = $vm_path;
+    }
+
+    protected function mapIndividualFolders()
+    {
+
+        $parts = explode('/', $this->app_path);
+        $top_folder = $parts[count($parts) - 1];
+        $mapped_path = '/home/vagrant/'.$top_folder;
+
+        $this->yaml['folders'][] = [
+            'map' => $this->app_path,
+            'to' => $mapped_path
+        ];
+
+        $this->vm_path = $mapped_path;
+
+        // check if ends with public
+        if (!str_ends_with($this->vm_path, '/public')) {
+            $this->vm_path .= '/public';
+        }
+
     }
 }
