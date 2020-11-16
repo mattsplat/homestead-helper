@@ -1,4 +1,13 @@
-## Homestead Helper
+# Homestead Helper
+
+## Installation
+- `git clone git@github.com:mattsplat/homestead-helper.git`
+- `composer install`
+
+or just download the [binary release](https://github.com/mattsplat/homestead-helper/releases/download/v0.1-alpha/homestead-helper)
+
+## About
+Homestead helper is built from  [Laravel Zero](https://laravel-zero.com/) as a way to make setting up applications in homestead.
 
 ### Commands
 - `setup:config` Required before adding applications
@@ -44,5 +53,6 @@ This will add an entry to the hosts file with the homestead ip and the domain pr
 - create database
 - migrate database / run seeders
 - npm install
-
+- rollback changes to yaml and hosts
+- remove project
 
