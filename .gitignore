@@ -5,3 +5,4 @@
 .phpunit.result.cache
 .homestead.config.json
 /builds/
+/app/Lib/.homestead.config.json.

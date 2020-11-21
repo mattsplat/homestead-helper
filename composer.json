@@ -18,8 +18,10 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
+        "intonate/tinker-zero": "^1.1",
         "laravel-zero/framework": "^8.0",
         "nunomaduro/laravel-console-menu": "^3.1",
+        "spatie/ssh": "^1.4",
         "symfony/process": "^5.1",
         "symfony/yaml": "^5.1"
     },

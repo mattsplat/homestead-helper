@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Lib\Config;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use Spatie\Ssh\Ssh;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
@@ -89,7 +90,6 @@ class AddApplication extends Command
         } else {
             dump($this->yaml);
         }
-
     }
 
     /**
@@ -144,4 +144,5 @@ class AddApplication extends Command
         }
 
     }
+
 }

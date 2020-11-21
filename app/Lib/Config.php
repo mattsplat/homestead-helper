@@ -6,7 +6,7 @@ namespace App\Lib;
 
 class Config
 {
-    public static $filename = __DIR__.'/.homestead.config.json';
+    public static $filename = __DIR__.'/.homestead.config.json.';
     public static $data = [];
 
     static public function open()
