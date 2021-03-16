@@ -16,7 +16,7 @@ class AddApplication extends Command
      *
      * @var string
      */
-    protected $signature = 'add:app {--dry-run}';
+    protected $signature = 'add:app {--dry-run} {--path=} {--domain=}';
 
     /**
      * The description of the command.
@@ -44,7 +44,12 @@ class AddApplication extends Command
             return;
         }
 
-        $this->app_path = $this->ask('What is the local path to your application?');
+        if($this->option('path')){
+            $this->app_path = $this->option('path');
+        } else {
+            $this->app_path = $this->ask('What is the local path to your application?');
+        }
+
         $this->domain = $this->ask('What domain would you like to use?');
         $shouldMapFolder = $this->choice('Do you want to map this folder to individually?', ['yes', 'no'], 'no');
 
