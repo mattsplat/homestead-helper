@@ -58,7 +58,7 @@ class AddApplication extends Command
         }
 
         // match folder
-        if(!$shouldMapFolder) {
+        if($shouldMapFolder === "no") {
             $this->matchFolders();
         } else {
             $this->mapIndividualFolders();
