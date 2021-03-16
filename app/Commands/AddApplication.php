@@ -76,7 +76,8 @@ class AddApplication extends Command
 
         if(!$this->option('dry-run')) {
             // create back up of yaml file
-            copy($this->config['path'].'/Homestead.yaml', $this->config['path'].'/Homestead.yaml'.'.copy');
+            copy($this->config['path'].'/Homestead.yaml',
+                $this->config['path'].'/Homestead.yaml'.(new \DateTime())->format('c').'.copy');
 
             // create new yaml file
             file_put_contents(
